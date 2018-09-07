@@ -16,7 +16,12 @@ def show_ip():
        ip = request.headers.getlist("X-Forwarded-For")[0]
     else:
        ip = request.remote_addr
-    hostname = socket.gethostbyaddr(ip)[0]
+       
+    try:
+        hostname = socket.gethostbyaddr(ip)[0]
+    except Exception as e:
+        hostname = ''
+    
     return jsonify({'ip': ip, 'hostname': hostname}), 200
 
 @app.route('/port/<int:port>')
